@@ -4,12 +4,14 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const __root = path.resolve(__dirname, '../');
+
 module.exports = {
 	entry: {
 		app: './src/scripts/index.js',
 	},
 	output: {
-		path: path.resolve(__dirname, 'dist'),
+		path: path.resolve(__root, 'dist'),
 		filename: 'scripts/[name].[chunkhash].js'
 	},
 	module: {
@@ -31,14 +33,17 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			'three/TrackballControls': path.join(__dirname, 'node_modules/three/examples/js/controls/TrackballControls.js'),
+			'three/TrackballControls': path.join(__root, './node_modules/three/examples/js/controls/TrackballControls.js'),
 		}
 	},
 	plugins: [
-		new CleanWebpackPlugin(['dist']),
+		new CleanWebpackPlugin(
+			['dist'],
+			{ root: __root },
+		),
 		new CopyWebpackPlugin([
 			{
-				from: path.resolve(__dirname, 'static'),
+				from: path.resolve(__root, 'static'),
 			}
 		]),
 		new HtmlWebpackPlugin({
