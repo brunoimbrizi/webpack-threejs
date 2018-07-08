@@ -14,8 +14,7 @@
     "domready": "^1.0.8",
     "glslify": "^6.2.1",
     "stats.js": "^0.17.0",
-    "three": "^0.94.0",
-    "three-trackballcontrols": "0.0.6"
+    "three": "^0.94.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

@@ -1,12 +1,11 @@
 import * as glslify from 'glslify';
-import * as THREE from 'three';
-import TrackballControls from 'three-trackballcontrols';
+import 'three';
+import 'three/TrackballControls';
 
 export default class WebGLView {
 
 	constructor(view) {
 		this.view = view;
-		this.renderer = this.view.renderer;
 
 		this.initThree();
 		this.initControls();
@@ -26,7 +25,7 @@ export default class WebGLView {
 	}
 
 	initControls() {
-		this.controls = new TrackballControls(this.camera, this.renderer.domElement);
+		this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
 		this.controls.target.set(0, 0, 0);
 		this.controls.rotateSpeed = 2.0;
 		this.controls.zoomSpeed = 0.8;
