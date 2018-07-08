@@ -34,6 +34,14 @@ module.exports = {
 				test: /\.(glsl|frag|vert)$/,
 				use: ['raw-loader', 'glslify-loader']
 			},
+			{
+				test: /\.(woff|woff2|eot|ttf|otf)$/,
+				use: 'file-loader'
+			},
+			{
+				test: /\.(jpe?g|png|gif)$/i,
+				use: 'file-loader'
+			}
 		]
 	},
 	resolve: {
