@@ -1,4 +1,4 @@
-import * as glslify from 'glslify';
+const glslify = require('glslify');
 import 'three';
 import 'three/TrackballControls';
 
