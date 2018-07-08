@@ -1,0 +1,36 @@
+{
+  "name": "webpack-threejs",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Bruno Imbrizi",
+  "sideEffects": false,
+  "scripts": {
+    "build": "webpack -p --config webpack.prod.js",
+    "start": "webpack-dev-server --config webpack.dev.js"
+  },
+  "dependencies": {
+    "@brunoimbrizi/controlkit": "^0.1.92",
+    "async-preloader": "^3.3.0",
+    "domready": "^1.0.8",
+    "glslify": "^6.2.1",
+    "stats.js": "^0.17.0",
+    "three": "^0.94.0",
+    "three-trackballcontrols": "0.0.6"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "clean-webpack-plugin": "^0.1.19",
+    "copy-webpack-plugin": "^4.5.2",
+    "css-loader": "^0.28.11",
+    "glslify-loader": "^1.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "raw-loader": "^0.5.1",
+    "style-loader": "^0.21.0",
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.1.3"
+  }
+}
