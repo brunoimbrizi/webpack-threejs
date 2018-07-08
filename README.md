@@ -1,12 +1,15 @@
 # webpack-threejs
 
-A simple boilerplate to start [Three.js](https://threejs.org/) projects using [Webpack](https://webpack.js.org/).
+A simple boilerplate to start projects with [Three.js](https://github.com/mrdoob/three.js/) using [Webpack](https://github.com/webpack).
+___
 
-### install
-`npm i`
+## Run
+- Install `npm install`
+- Run `npm start`
+- Build `npm run build`
+___
 
-### run
-`npm start`
-
-### build
-`npm run build`
+## Libraries
+- [AsyncPreloader](https://github.com/dmnsgn/async-preloader) - assets preloader
+- [ControlKit](https://github.com/brunoimbrizi/controlkit.js) - GUI
+- [stats.js](https://github.com/mrdoob/stats.js/) - performance monitor
