@@ -1,6 +1,6 @@
 const glslify = require('glslify');
 import 'three';
-import 'three/TrackballControls';
+import 'three-examples/controls/TrackballControls';
 
 export default class WebGLView {
 

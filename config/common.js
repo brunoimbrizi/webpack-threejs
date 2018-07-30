@@ -35,6 +35,10 @@ module.exports = {
 				use: ['raw-loader', 'glslify-loader']
 			},
 			{
+				test: /three\/examples\/js/,
+				use: 'imports-loader?THREE=three'
+			},
+			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
 				use: 'file-loader'
 			},
@@ -46,7 +50,7 @@ module.exports = {
 	},
 	resolve: {
 		alias: {
-			'three/TrackballControls': path.join(__root, './node_modules/three/examples/js/controls/TrackballControls.js'),
+			'three-examples': path.join(__root, './node_modules/three/examples/js'),
 		}
 	},
 	plugins: [
