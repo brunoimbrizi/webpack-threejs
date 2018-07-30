@@ -6,6 +6,8 @@ export default class UIView {
 	constructor(view) {
 		this.view = view;
 
+		this.postProcessing = false;
+
 		this.range = [0, 1];
 
 		this.initControlKit();
@@ -20,9 +22,9 @@ export default class UIView {
 		this.controlKit = new ControlKit();
 		this.controlKit.addPanel({ width: 300, enable: false })
 
-		.addGroup({label: 'Controls', enable: true })
+		.addGroup({label: 'Post Processing', enable: true })
 		// .addSlider(this, 'camX', 'rangeCam', { label: 'x', onChange: () => { that.onCameraChange(); } })
-		// .addCheckbox(this, 'camStoryboard', { label: 'storyboard', onChange: () => { that.onCameraChange(); } })
+		.addCheckbox(this, 'postProcessing', { label: 'post processing', onChange: () => { that.onPostProcessingChange(); } })
 	}
 
 	initStats() {
@@ -38,5 +40,11 @@ export default class UIView {
 	toggle() {
 		if (this.controlKit._enabled) this.controlKit.disable();
 		else this.controlKit.enable();
+	}
+
+	onPostProcessingChange() {
+		if (!this.view.webgl.composer) return;
+		this.view.webgl.composer.enabled = this.postProcessing;
+		this.view.webgl.object3D.material.wireframe = !this.postProcessing;
 	}
 }

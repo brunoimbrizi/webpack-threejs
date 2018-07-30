@@ -2,6 +2,13 @@ const glslify = require('glslify');
 import 'three';
 import 'three-examples/controls/TrackballControls';
 
+import 'three-examples/shaders/CopyShader';
+import 'three-examples/shaders/SobelOperatorShader';
+
+import 'three-examples/postprocessing/EffectComposer';
+import 'three-examples/postprocessing/RenderPass';
+import 'three-examples/postprocessing/ShaderPass';
+
 export default class WebGLView {
 
 	constructor(view) {
@@ -10,6 +17,7 @@ export default class WebGLView {
 		this.initThree();
 		this.initControls();
 		this.initObject();
+		this.initPostProcessing();
 	}
 
 	initThree() {
@@ -21,7 +29,7 @@ export default class WebGLView {
 		this.camera.position.z = 300;
 
 		// renderer
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 	}
 
 	initControls() {
@@ -40,7 +48,6 @@ export default class WebGLView {
 
 	initObject() {
 		const geometry = new THREE.IcosahedronBufferGeometry(50, 1);
-		// const geometry = new THREE.PlaneGeometry(200, 200, 10, 10);
 
 		const material = new THREE.ShaderMaterial({
 			uniforms: {},
@@ -49,8 +56,21 @@ export default class WebGLView {
 			wireframe: true
 		});
 
-		const mesh = new THREE.Mesh(geometry, material);
-		this.scene.add(mesh);
+		this.object3D = new THREE.Mesh(geometry, material);
+		this.scene.add(this.object3D);
+	}
+
+	initPostProcessing() {
+		this.composer = new THREE.EffectComposer(this.renderer);
+
+		const renderPass = new THREE.RenderPass(this.scene, this.camera);
+		// renderPass.renderToScreen = true;
+		this.composer.addPass(renderPass);
+
+		const sobelPass = new THREE.ShaderPass(THREE.SobelOperatorShader);
+		sobelPass.renderToScreen = true;
+		this.composer.addPass(sobelPass);
+		this.sobelPass = sobelPass;
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -62,7 +82,8 @@ export default class WebGLView {
 	}
 
 	draw() {
-		this.renderer.render(this.scene, this.camera);
+		if (this.composer && this.composer.enabled) this.composer.render();
+		else this.renderer.render(this.scene, this.camera);
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -75,6 +96,9 @@ export default class WebGLView {
 		this.camera.updateProjectionMatrix();
 
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+		this.composer.setSize(window.innerWidth, window.innerHeight);
+		this.sobelPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
 
 		if (this.controls) this.controls.handleResize();
 	}
