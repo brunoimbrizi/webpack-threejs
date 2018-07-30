@@ -27,16 +27,17 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
-				test: /\.css$/,
-				use: ['style-loader', 'css-loader']
-			},
-			{
 				test: /\.(glsl|frag|vert)$/,
 				use: ['raw-loader', 'glslify-loader']
 			},
 			{
 				test: /three\/examples\/js/,
 				use: 'imports-loader?THREE=three'
+			},
+			/*
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
 			},
 			{
 				test: /\.(woff|woff2|eot|ttf|otf)$/,
@@ -46,6 +47,7 @@ module.exports = {
 				test: /\.(jpe?g|png|gif)$/i,
 				use: 'file-loader'
 			}
+			*/
 		]
 	},
 	resolve: {

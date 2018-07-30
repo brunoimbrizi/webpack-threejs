@@ -1,6 +1,5 @@
-const ready = require('domready');
+import ready from 'domready';
 
-import style from '../styles/main.css';
 import App from './App';
 
 ready(() => {
