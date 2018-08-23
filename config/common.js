@@ -12,7 +12,8 @@ module.exports = {
 	},
 	output: {
 		path: path.resolve(__root, 'dist'),
-		filename: 'scripts/[name].[chunkhash].js'
+		filename: 'scripts/[name].[chunkhash].js',
+		chunkFilename: 'scripts/[name].[chunkhash].js',
 	},
 	module: {
 		rules: [
@@ -21,7 +22,8 @@ module.exports = {
 				use: {
 					loader: 'babel-loader',
 					options: {
-						presets: ['@babel/preset-env']
+						presets: ['@babel/preset-env'],
+						plugins: ['@babel/plugin-syntax-dynamic-import']
 					}
 				},
 				exclude: /node_modules/
