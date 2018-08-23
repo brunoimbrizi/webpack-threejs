@@ -32,6 +32,10 @@ const map = (num, min1, max1, min2, max2, round = false, constrainMin = true, co
 	return num2;
 };
 
+const mod = (n, m) => {
+	return ((n % m) + m) % m;
+};
+
 const random = (min, max) => {
 	if (Object.prototype.toString.call(min) === '[object Array]') return min[~~(Math.random() * min.length)];
 
@@ -44,4 +48,4 @@ const random = (min, max) => {
 };
 
 
-export { PI, HALF_PI, QUARTER_PI, TWO_PI, DEG_TO_RAD, clamp, lerp, map, random };
+export { PI, HALF_PI, QUARTER_PI, TWO_PI, DEG_TO_RAD, clamp, lerp, map, mod, random };
