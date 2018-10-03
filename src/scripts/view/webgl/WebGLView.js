@@ -33,17 +33,15 @@ export default class WebGLView {
 	}
 
 	initControls() {
-		this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
-		this.controls.target.set(0, 0, 0);
-		this.controls.rotateSpeed = 2.0;
-		this.controls.zoomSpeed = 0.8;
-		this.controls.panSpeed = 0.8;
-		this.controls.noZoom = false;
-		this.controls.noPan = false;
-		this.controls.staticMoving = false;
-		this.controls.dynamicDampingFactor = 0.15;
-		this.controls.maxDistance = 3000;
-		this.controls.enabled = true;
+		// TrackballControls failing on IE
+		try {
+			this.trackball = new THREE.TrackballControls(this.camera, this.renderer.domElement);
+			this.trackball.rotateSpeed = 2.0;
+			this.trackball.enabled = true;
+		}
+		catch(e) {
+			// proceed without trackball
+		}
 	}
 
 	initObject() {
@@ -78,7 +76,7 @@ export default class WebGLView {
 	// ---------------------------------------------------------------------------------------------
 
 	update() {
-		if (this.controls) this.controls.update();
+		if (this.trackball) this.trackball.update();
 	}
 
 	draw() {
@@ -100,6 +98,6 @@ export default class WebGLView {
 		this.composer.setSize(window.innerWidth, window.innerHeight);
 		this.sobelPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
 
-		if (this.controls) this.controls.handleResize();
+		if (this.trackball) this.trackball.handleResize();
 	}
 }

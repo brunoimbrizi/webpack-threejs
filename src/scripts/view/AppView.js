@@ -62,8 +62,9 @@ export default class AppView {
 	}
 
 	keyup(e) {
-		if (e.keyCode == 71) { // g
-			if (this.ui) this.ui.toggle();
-		}
+		// g
+		if (e.keyCode == 71) { if (this.ui) this.ui.toggle(); }
+		// r
+		if (e.keyCode == 82) { if (this.webgl.trackball) this.webgl.trackball.reset(); }
 	}
 }
