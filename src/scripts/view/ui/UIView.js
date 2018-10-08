@@ -11,20 +11,18 @@ export default class UIView {
 		this.range = [0, 1];
 
 		this.initControlKit();
-		// this.initStats();
+		this.initStats();
 
-		this.controlKit.disable();
+		this.disable();
 	}
 
 	initControlKit() {
-		const that = this;
-
 		this.controlKit = new ControlKit();
 		this.controlKit.addPanel({ width: 300, enable: false })
 
 		.addGroup({label: 'Post Processing', enable: true })
-		// .addSlider(this, 'camX', 'rangeCam', { label: 'x', onChange: () => { that.onCameraChange(); } })
-		.addCheckbox(this, 'postProcessing', { label: 'post processing', onChange: () => { that.onPostProcessingChange(); } })
+		// .addSlider(this, 'postOpacity', 'range', { label: 'opacity', onChange: () => { this.onPostProcessingChange(); } })
+		.addCheckbox(this, 'postProcessing', { label: 'post processing', onChange: () => { this.onPostProcessingChange(); } })
 	}
 
 	initStats() {
@@ -37,9 +35,19 @@ export default class UIView {
 	// PUBLIC
 	// ---------------------------------------------------------------------------------------------
 
+	enable() {
+		this.controlKit.enable();
+		if (this.stats) this.stats.dom.style.display = '';
+	}
+
+	disable() {
+		this.controlKit.disable();
+		if (this.stats) this.stats.dom.style.display = 'none';
+	}
+
 	toggle() {
-		if (this.controlKit._enabled) this.controlKit.disable();
-		else this.controlKit.enable();
+		if (this.controlKit._enabled) this.disable();
+		else this.enable();
 	}
 
 	onPostProcessingChange() {

@@ -44,13 +44,13 @@ export default class AppView {
 	// ---------------------------------------------------------------------------------------------
 
 	update() {
-		// this.ui.stats.begin();
+		if (this.ui.stats) this.ui.stats.begin();
 		if(this.webgl) this.webgl.update();
 	}
 
 	draw() {
 		if(this.webgl) this.webgl.draw();
-		// this.ui.stats.end();
+		if (this.ui.stats) this.ui.stats.end();
 	}
 
 	// ---------------------------------------------------------------------------------------------
