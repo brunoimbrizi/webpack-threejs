@@ -19,7 +19,7 @@
     "start": "webpack-dev-server --config config/dev.js"
   },
   "dependencies": {
-    "@brunoimbrizi/controlkit": "^0.1.92",
+    "@brunoimbrizi/controlkit": "^0.1.93",
     "async-preloader": "^3.3.0",
     "domready": "^1.0.8",
     "stats.js": "^0.17.0",
