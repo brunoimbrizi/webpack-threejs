@@ -20,10 +20,10 @@
   },
   "dependencies": {
     "@brunoimbrizi/controlkit": "^0.1.93",
-    "async-preloader": "^3.3.0",
+    "async-preloader": "^4.3.0",
     "domready": "^1.0.8",
     "stats.js": "^0.17.0",
-    "three": "^0.94.0"
+    "three": "^0.98.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.52",
