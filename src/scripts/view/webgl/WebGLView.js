@@ -1,4 +1,3 @@
-const glslify = require('glslify');
 import 'three';
 import 'three-examples/controls/TrackballControls';
 
@@ -9,14 +8,18 @@ import 'three-examples/postprocessing/EffectComposer';
 import 'three-examples/postprocessing/RenderPass';
 import 'three-examples/postprocessing/ShaderPass';
 
+import InteractiveControls from './controls/InteractiveControls';
+
+const glslify = require('glslify');
+
 export default class WebGLView {
 
 	constructor(view) {
 		this.view = view;
 
 		this.initThree();
-		this.initControls();
 		this.initObject();
+		this.initControls();
 		this.initPostProcessing();
 	}
 
@@ -42,6 +45,10 @@ export default class WebGLView {
 		catch(e) {
 			// proceed without trackball
 		}
+
+		this.interactive = new InteractiveControls(this.camera, this.renderer.domElement);
+		this.interactive.on('interactive-down', this.onInteractiveDown.bind(this));
+		this.interactive.objects.push(this.object3D);
 	}
 
 	initObject() {
@@ -99,5 +106,10 @@ export default class WebGLView {
 		this.sobelPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
 
 		if (this.trackball) this.trackball.handleResize();
+		if (this.interactive) this.interactive.resize();
+	}
+
+	onInteractiveDown(e) {
+		this.object3D.material.wireframe = !e.object;
 	}
 }

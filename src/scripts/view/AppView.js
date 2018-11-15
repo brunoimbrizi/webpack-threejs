@@ -13,8 +13,6 @@ export default class AppView {
 
 	initWebGL() {
 		this.webgl = new WebGLView(this);
-
-		// move canvas to container
 		document.querySelector('.container').appendChild(this.webgl.renderer.domElement);
 	}
 
@@ -45,11 +43,11 @@ export default class AppView {
 
 	update() {
 		if (this.ui.stats) this.ui.stats.begin();
-		if(this.webgl) this.webgl.update();
+		if (this.webgl) this.webgl.update();
 	}
 
 	draw() {
-		if(this.webgl) this.webgl.draw();
+		if (this.webgl) this.webgl.draw();
 		if (this.ui.stats) this.ui.stats.end();
 	}
 
@@ -58,7 +56,7 @@ export default class AppView {
 	// ---------------------------------------------------------------------------------------------
 
 	resize() {
-		if(this.webgl) this.webgl.resize();
+		if (this.webgl) this.webgl.resize();
 	}
 
 	keyup(e) {
