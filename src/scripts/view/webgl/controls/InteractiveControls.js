@@ -28,11 +28,13 @@ export default class InteractiveControls extends EventEmitter {
 	}
 
 	enable() {
+		if (this.enabled) return;
 		this.addListeners();
 		this._enabled = true;
 	}
 
 	disable() {
+		if (!this.enabled) return;
 		this.removeListeners();
 		this._enabled = false;
 	}
@@ -85,6 +87,7 @@ export default class InteractiveControls extends EventEmitter {
 
 		this.raycaster.setFromCamera(this.mouse, this.camera);
 
+		/*
 		// is dragging
 		if (this.selected && this.isDown) {
 			if (this.raycaster.ray.intersectPlane(this.plane, this.intersection)) {
@@ -92,11 +95,13 @@ export default class InteractiveControls extends EventEmitter {
 			}
 			return;
 		}
+		*/
 
 		const intersects = this.raycaster.intersectObjects(this.objects);
 
 		if (intersects.length > 0) {
 			const object = intersects[0].object;
+			this.intersectionData = intersects[0];
 
 			this.plane.setFromNormalAndCoplanarPoint(this.camera.getWorldDirection(this.plane.normal), object.position);
 
@@ -106,10 +111,12 @@ export default class InteractiveControls extends EventEmitter {
 				this.hovered = object;
 			}
 			else {
-				this.emit('interactive-move', { object, intersection: intersects[0] });
+				this.emit('interactive-move', { object, intersectionData: this.intersectionData });
 			}
 		}
 		else {
+			this.intersectionData = null;
+
 			if (this.hovered !== null) {
 				this.emit('interactive-out', { object: this.hovered });
 				this.hovered = null;
@@ -118,11 +125,12 @@ export default class InteractiveControls extends EventEmitter {
 	}
 
 	onDown(e) {
+		e.preventDefault();
+
 		this.isDown = true;
+		this.onMove(e);
 
-		// this.onMove(e);
-
-		this.emit('interactive-down', { object: this.hovered, previous: this.selected });
+		this.emit('interactive-down', { object: this.hovered, previous: this.selected, intersectionData: this.intersectionData });
 		this.selected = this.hovered;
 
 		if (this.selected) {
@@ -133,6 +141,8 @@ export default class InteractiveControls extends EventEmitter {
 	}
 
 	onUp(e) {
+		e.preventDefault();
+
 		this.isDown = false;
 
 		this.emit('interactive-up', { object: this.hovered });
