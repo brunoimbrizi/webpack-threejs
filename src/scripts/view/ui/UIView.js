@@ -53,6 +53,5 @@ export default class UIView {
 	onPostProcessingChange() {
 		if (!this.view.webgl.composer) return;
 		this.view.webgl.composer.enabled = this.postProcessing;
-		this.view.webgl.object3D.material.wireframe = !this.postProcessing;
 	}
 }
