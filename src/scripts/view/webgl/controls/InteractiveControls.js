@@ -64,15 +64,15 @@ export default class InteractiveControls extends EventEmitter {
 		this.el.removeEventListener('touchend', this.handlerUp);
 	}
 
-	resize() {
-		if (this.el === window) {
-			this.width = window.innerWidth;
-			this.height = window.innerHeight;
+	resize(x, y, width, height) {
+		if (x || y || width || height) {
+			this.rect = { x, y, width, height };
+		}
+		else if (this.el === window) {
+			this.rect = { x: 0, y: 0, width: window.innerWidth, height: window.innerHeight };
 		}
 		else {
-			const rect = this.el.getBoundingClientRect();
-			this.width = rect.width;
-			this.height = rect.height;
+			this.rect = this.el.getBoundingClientRect();
 		}
 	}
 
@@ -82,8 +82,8 @@ export default class InteractiveControls extends EventEmitter {
 		const t = (e.touches) ? e.touches[0] : e;
 		const touch = { x: t.clientX, y: t.clientY };
 
-		this.mouse.x = (touch.x / this.width) * 2 - 1;
-		this.mouse.y = -(touch.y / this.height) * 2 + 1;
+		this.mouse.x = ((touch.x + this.rect.x) / this.rect.width) * 2 - 1;
+		this.mouse.y = -((touch.y + this.rect.y) / this.rect.height) * 2 + 1;
 
 		this.raycaster.setFromCamera(this.mouse, this.camera);
 
