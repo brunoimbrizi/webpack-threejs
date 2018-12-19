@@ -1,5 +1,8 @@
 import EventEmitter from 'events';
 import * as THREE from 'three';
+import browser from 'browser-detect';
+
+import { passiveEvent } from '../../../utils/event.utils.js';
 
 export default class InteractiveControls extends EventEmitter {
 
@@ -24,6 +27,8 @@ export default class InteractiveControls extends EventEmitter {
 
 		this.isDown = false;
 
+		this.browser = browser();
+
 		this.enable();
 	}
 
@@ -45,23 +50,31 @@ export default class InteractiveControls extends EventEmitter {
 		this.handlerUp = this.onUp.bind(this);
 		this.handlerLeave = this.onLeave.bind(this);
 
-		this.el.addEventListener('mousedown', this.handlerDown);
-		this.el.addEventListener('mousemove', this.handlerMove);
-		this.el.addEventListener('mouseup', this.handlerUp);
-		this.el.addEventListener('mouseleave', this.handlerLeave);
-		this.el.addEventListener('touchstart', this.handlerDown);
-		this.el.addEventListener('touchmove', this.handlerMove);
-		this.el.addEventListener('touchend', this.handlerUp);
+		if (this.browser.mobile) {
+			this.el.addEventListener('touchstart', this.handlerDown, passiveEvent);
+			this.el.addEventListener('touchmove', this.handlerMove, passiveEvent);
+			this.el.addEventListener('touchend', this.handlerUp, passiveEvent);
+		}
+		else {
+			this.el.addEventListener('mousedown', this.handlerDown);
+			this.el.addEventListener('mousemove', this.handlerMove);
+			this.el.addEventListener('mouseup', this.handlerUp);
+			this.el.addEventListener('mouseleave', this.handlerLeave);
+		}
 	}
 
 	removeListeners() {
-		this.el.removeEventListener('mousedown', this.handlerDown);
-		this.el.removeEventListener('mousemove', this.handlerMove);
-		this.el.removeEventListener('mouseup', this.handlerUp);
-		this.el.removeEventListener('mouseleave', this.handlerLeave);
-		this.el.removeEventListener('touchstart', this.handlerDown);
-		this.el.removeEventListener('touchmove', this.handlerMove);
-		this.el.removeEventListener('touchend', this.handlerUp);
+		if (this.browser.mobile) {
+			this.el.removeEventListener('touchstart', this.handlerDown);
+			this.el.removeEventListener('touchmove', this.handlerMove);
+			this.el.removeEventListener('touchend', this.handlerUp);
+		}
+		else {
+			this.el.removeEventListener('mousedown', this.handlerDown);
+			this.el.removeEventListener('mousemove', this.handlerMove);
+			this.el.removeEventListener('mouseup', this.handlerUp);
+			this.el.removeEventListener('mouseleave', this.handlerLeave);
+		}
 	}
 
 	resize(x, y, width, height) {
@@ -77,8 +90,6 @@ export default class InteractiveControls extends EventEmitter {
 	}
 
 	onMove(e) {
-		e.preventDefault();
-
 		const t = (e.touches) ? e.touches[0] : e;
 		const touch = { x: t.clientX, y: t.clientY };
 
@@ -125,8 +136,6 @@ export default class InteractiveControls extends EventEmitter {
 	}
 
 	onDown(e) {
-		e.preventDefault();
-
 		this.isDown = true;
 		this.onMove(e);
 
@@ -141,8 +150,6 @@ export default class InteractiveControls extends EventEmitter {
 	}
 
 	onUp(e) {
-		e.preventDefault();
-
 		this.isDown = false;
 
 		this.emit('interactive-up', { object: this.hovered });

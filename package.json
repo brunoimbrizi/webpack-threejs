@@ -21,6 +21,7 @@
   "dependencies": {
     "@brunoimbrizi/controlkit": "^0.1.93",
     "async-preloader": "^4.3.0",
+    "browser-detect": "^0.2.28",
     "domready": "^1.0.8",
     "stats.js": "^0.17.0",
     "three": "^0.98.0"
