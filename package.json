@@ -1,6 +1,6 @@
 {
   "name": "webpack-threejs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple boilerplate to start projects with Three.js using webpack.",
   "keywords": [
     "three.js",

@@ -1,10 +1,10 @@
 import ControlKit from '@brunoimbrizi/controlkit';
 import Stats from 'stats.js';
 
-export default class UIView {
+export default class GUIView {
 
-	constructor(view) {
-		this.view = view;
+	constructor(app) {
+		this.app = app;
 
 		this.postProcessing = false;
 
@@ -51,7 +51,7 @@ export default class UIView {
 	}
 
 	onPostProcessingChange() {
-		if (!this.view.webgl.composer) return;
-		this.view.webgl.composer.enabled = this.postProcessing;
+		if (!this.app.webgl.composer) return;
+		this.app.webgl.composer.enabled = this.postProcessing;
 	}
 }

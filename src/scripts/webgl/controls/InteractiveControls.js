@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import * as THREE from 'three';
 import browser from 'browser-detect';
 
-import { passiveEvent } from '../../../utils/event.utils.js';
+import { passiveEvent } from '../../utils/event.utils.js';
 
 export default class InteractiveControls extends EventEmitter {
 
