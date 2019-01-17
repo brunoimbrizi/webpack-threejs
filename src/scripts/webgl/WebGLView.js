@@ -24,27 +24,23 @@ export default class WebGLView {
 	}
 
 	initThree() {
-		// scene
 		this.scene = new THREE.Scene();
 
-		// camera
 		this.camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
 		this.camera.position.z = 300;
 
-		// renderer
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+		this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+		this.clock = new THREE.Clock();
 	}
 
 	initControls() {
-		// TrackballControls failing on IE
 		try {
 			this.trackball = new THREE.TrackballControls(this.camera, this.renderer.domElement);
 			this.trackball.rotateSpeed = 2.0;
 			this.trackball.enabled = true;
 		}
-		catch(e) {
-			// proceed without trackball
-		}
+		catch(e) { }
 
 		this.interactive = new InteractiveControls(this.camera, this.renderer.domElement);
 		this.interactive.on('interactive-down', this.onInteractiveDown.bind(this));
@@ -83,6 +79,8 @@ export default class WebGLView {
 	// ---------------------------------------------------------------------------------------------
 
 	update() {
+		const delta = this.clock.getDelta();
+		
 		if (this.trackball) this.trackball.update();
 	}
 
