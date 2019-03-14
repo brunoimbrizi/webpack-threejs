@@ -1,3 +1,5 @@
+import glslify from 'glslify';
+
 import 'three';
 import 'three-examples/controls/TrackballControls';
 
@@ -10,7 +12,6 @@ import 'three-examples/postprocessing/ShaderPass';
 
 import InteractiveControls from './controls/InteractiveControls';
 
-const glslify = require('glslify');
 
 export default class WebGLView {
 
