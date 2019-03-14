@@ -99,6 +99,7 @@ export default class WebGLView {
 		this.camera.updateProjectionMatrix();
 
 		this.fovHeight = 2 * Math.tan((this.camera.fov * Math.PI) / 180 / 2) * this.camera.position.z;
+		this.fovWidth = this.fovHeight * this.camera.aspect;
 
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
