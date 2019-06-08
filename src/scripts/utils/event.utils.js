@@ -20,8 +20,6 @@ const isSupported = () => {
 	return passiveSupported;
 };
 
-const passiveEvent = () => {
+export const passiveEvent = () => {
 	return isSupported() ? { passive: true } : false;
 };
-
-export { passiveEvent };
