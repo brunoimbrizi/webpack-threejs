@@ -1,17 +1,18 @@
 import glslify from 'glslify';
 
+import {
+	EffectComposer,
+	BrightnessContrastEffect,
+	EffectPass,
+	RenderPass,
+	ShaderPass,
+	BlendFunction,
+} from 'postprocessing';
+
 import 'three';
 import 'three-examples/controls/TrackballControls';
 
-import 'three-examples/shaders/CopyShader';
-import 'three-examples/shaders/SobelOperatorShader';
-
-import 'three-examples/postprocessing/EffectComposer';
-import 'three-examples/postprocessing/RenderPass';
-import 'three-examples/postprocessing/ShaderPass';
-
 import InteractiveControls from './controls/InteractiveControls';
-
 
 export default class WebGLView {
 
@@ -36,16 +37,13 @@ export default class WebGLView {
 	}
 
 	initControls() {
-		try {
-			this.trackball = new THREE.TrackballControls(this.camera, this.renderer.domElement);
-			this.trackball.rotateSpeed = 2.0;
-			this.trackball.enabled = true;
-		}
-		catch(e) { }
+		this.trackball = new THREE.TrackballControls(this.camera, this.renderer.domElement);
+		this.trackball.rotateSpeed = 2.0;
+		this.trackball.enabled = true;
 
 		this.interactive = new InteractiveControls(this.camera, this.renderer.domElement);
-		this.interactive.on('interactive-down', this.onInteractiveDown.bind(this));
-		this.interactive.objects.push(this.object3D);
+		// this.interactive.on('interactive-down', this.onInteractiveDown.bind(this));
+		// this.interactive.objects.push(this.object3D);
 	}
 
 	initObject() {
@@ -63,16 +61,21 @@ export default class WebGLView {
 	}
 
 	initPostProcessing() {
-		this.composer = new THREE.EffectComposer(this.renderer);
+		this.composer = new EffectComposer(this.renderer);
+		this.composer.enabled = true;
 
-		const renderPass = new THREE.RenderPass(this.scene, this.camera);
-		// renderPass.renderToScreen = true;
+		const renderPass = new RenderPass(this.scene, this.camera);
+		renderPass.renderToScreen = false;
+
+		const contrastEffect = new BrightnessContrastEffect({ contrast: 1 });
+		const contrastPass = new EffectPass(this.camera, contrastEffect);
+		contrastPass.renderToScreen = true;
+		
 		this.composer.addPass(renderPass);
+		this.composer.addPass(contrastPass);
 
-		const sobelPass = new THREE.ShaderPass(THREE.SobelOperatorShader);
-		sobelPass.renderToScreen = true;
-		this.composer.addPass(sobelPass);
-		this.sobelPass = sobelPass;
+		// kickstart composer
+		this.composer.render(1);
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -105,13 +108,8 @@ export default class WebGLView {
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
 		this.composer.setSize(window.innerWidth, window.innerHeight);
-		this.sobelPass.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
 
 		if (this.trackball) this.trackball.handleResize();
 		if (this.interactive) this.interactive.resize();
-	}
-
-	onInteractiveDown(e) {
-		this.object3D.material.wireframe = !e.object;
 	}
 }

@@ -26,7 +26,7 @@ module.exports = {
 						plugins: ['@babel/plugin-syntax-dynamic-import']
 					}
 				},
-				exclude: /node_modules/
+				exclude: /node_modules\/(?!(postprocessing)\/).*/,
 			},
 			{
 				test: /\.(glsl|frag|vert)$/,

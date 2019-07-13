@@ -20,18 +20,18 @@
   },
   "dependencies": {
     "@brunoimbrizi/controlkit": "^0.1.97",
-    "async-preloader": "^4.5.0",
-    "browser-detect": "^0.2.28",
+    "async-preloader": "^4.8.0",
     "domready": "^1.0.8",
+    "postprocessing": "^6.5.1",
     "stats.js": "^0.17.0",
     "three": "^0.105.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
+    "@babel/core": "^7.5.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/polyfill": "^7.2.5",
-    "@babel/preset-env": "^7.3.4",
-    "babel-loader": "^8.0.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.5.4",
+    "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^0.1.19",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.1.1",
@@ -44,8 +44,8 @@
     "raw-loader": "^1.0.0",
     "style-loader": "^0.21.0",
     "webpack": "4.28.4",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.1",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "^3.7.2",
     "webpack-merge": "^4.2.1"
   }
 }
