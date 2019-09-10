@@ -32,10 +32,6 @@ module.exports = {
 				test: /\.(glsl|frag|vert)$/,
 				use: ['glslify-import-loader', 'raw-loader', 'glslify-loader']
 			},
-			{
-				test: /three\/examples\/js/,
-				use: 'imports-loader?THREE=three'
-			},
 			/*
 			{
 				test: /\.css$/,
@@ -52,11 +48,6 @@ module.exports = {
 			*/
 		]
 	},
-	resolve: {
-		alias: {
-			'three-examples': path.join(__root, './node_modules/three/examples/js'),
-		}
-	},
 	plugins: [
 		new CleanWebpackPlugin(
 			['dist'],
@@ -70,8 +61,5 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
 		}),
-		new webpack.ProvidePlugin({
-			'THREE': 'three'
-		})
 	]
 };

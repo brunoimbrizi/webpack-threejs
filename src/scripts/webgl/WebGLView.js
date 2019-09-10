@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import glslify from 'glslify';
 
 import {
@@ -9,8 +10,7 @@ import {
 	BlendFunction,
 } from 'postprocessing';
 
-import 'three';
-import 'three-examples/controls/TrackballControls';
+import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 
 export default class WebGLView {
 
@@ -35,7 +35,7 @@ export default class WebGLView {
 	}
 
 	initControls() {
-		this.trackball = new THREE.TrackballControls(this.camera, this.renderer.domElement);
+		this.trackball = new TrackballControls(this.camera, this.renderer.domElement);
 		this.trackball.rotateSpeed = 2.0;
 		this.trackball.enabled = true;
 	}
