@@ -12,8 +12,6 @@ import {
 import 'three';
 import 'three-examples/controls/TrackballControls';
 
-import InteractiveControls from './controls/InteractiveControls';
-
 export default class WebGLView {
 
 	constructor(app) {
@@ -40,10 +38,6 @@ export default class WebGLView {
 		this.trackball = new THREE.TrackballControls(this.camera, this.renderer.domElement);
 		this.trackball.rotateSpeed = 2.0;
 		this.trackball.enabled = true;
-
-		this.interactive = new InteractiveControls(this.camera, this.renderer.domElement);
-		// this.interactive.on('interactive-down', this.onInteractiveDown.bind(this));
-		// this.interactive.objects.push(this.object3D);
 	}
 
 	initObject() {
@@ -62,7 +56,7 @@ export default class WebGLView {
 
 	initPostProcessing() {
 		this.composer = new EffectComposer(this.renderer);
-		this.composer.enabled = true;
+		this.composer.enabled = false;
 
 		const renderPass = new RenderPass(this.scene, this.camera);
 		renderPass.renderToScreen = false;
@@ -110,6 +104,5 @@ export default class WebGLView {
 		this.composer.setSize(window.innerWidth, window.innerHeight);
 
 		if (this.trackball) this.trackball.handleResize();
-		if (this.interactive) this.interactive.resize();
 	}
 }

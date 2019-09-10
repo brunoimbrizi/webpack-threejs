@@ -18,7 +18,7 @@ export default class GUIView {
 
 	initControlKit() {
 		this.controlKit = new ControlKit();
-		this.controlKit.addPanel({ width: 300, enable: false })
+		this.controlKit.addPanel({ width: 300, enable: true })
 
 		.addGroup({label: 'Post Processing', enable: true })
 		// .addSlider(this, 'postOpacity', 'range', { label: 'opacity', onChange: () => { this.onPostProcessingChange(); } })
