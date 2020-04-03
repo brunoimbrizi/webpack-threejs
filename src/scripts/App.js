@@ -61,9 +61,9 @@ export default class App {
 	}
 
 	keyup(e) {
-		// g
-		if (e.keyCode == 71) { if (this.gui) this.gui.toggle(); }
-		// r
-		if (e.keyCode == 82) { if (this.webgl.trackball) this.webgl.trackball.reset(); }
+		// g or p
+		if (e.keyCode == 71 || e.keyCode == 80) { if (this.gui) this.gui.toggle(); }
+		// h
+		if (e.keyCode == 72) { if (this.webgl.trackball) this.webgl.trackball.reset(); }
 	}
 }

@@ -2,12 +2,11 @@ import * as THREE from 'three';
 import glslify from 'glslify';
 
 import {
+	BlendFunction,
 	EffectComposer,
-	BrightnessContrastEffect,
 	EffectPass,
 	RenderPass,
-	ShaderPass,
-	BlendFunction,
+	ScanlineEffect,
 } from 'postprocessing';
 
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
@@ -58,15 +57,10 @@ export default class WebGLView {
 		this.composer = new EffectComposer(this.renderer);
 		this.composer.enabled = false;
 
-		const renderPass = new RenderPass(this.scene, this.camera);
-		renderPass.renderToScreen = false;
+		this.scanlineEffect = new ScanlineEffect({ blendFunction: BlendFunction.MULTIPLY, opacity: 0.05, density: 0.5 });
 
-		const contrastEffect = new BrightnessContrastEffect({ contrast: 1 });
-		const contrastPass = new EffectPass(this.camera, contrastEffect);
-		contrastPass.renderToScreen = true;
-		
-		this.composer.addPass(renderPass);
-		this.composer.addPass(contrastPass);
+		this.composer.addPass(new RenderPass(this.scene, this.camera));
+		this.composer.addPass(new EffectPass(this.camera, this.scanlineEffect));
 
 		// kickstart composer
 		this.composer.render(1);
@@ -83,7 +77,7 @@ export default class WebGLView {
 	}
 
 	draw() {
-		if (this.composer && this.composer.enabled) this.composer.render();
+		if (this.composer && this.composer.enabled) this.composer.render(this.clock.getDelta());
 		else this.renderer.render(this.scene, this.camera);
 	}
 
@@ -101,7 +95,7 @@ export default class WebGLView {
 
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-		this.composer.setSize(window.innerWidth, window.innerHeight);
+		if (this.composer) this.composer.setSize(window.innerWidth, window.innerHeight);
 
 		if (this.trackball) this.trackball.handleResize();
 	}

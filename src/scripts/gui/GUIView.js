@@ -7,6 +7,7 @@ export default class GUIView {
 		this.app = app;
 
 		this.postProcessing = false;
+		this.postDensity = 0.5;
 
 		this.range = [0, 1];
 
@@ -18,10 +19,10 @@ export default class GUIView {
 
 	initControlKit() {
 		this.controlKit = new ControlKit();
-		this.controlKit.addPanel({ width: 300, enable: true })
+		this.controlKit.addPanel({ width: 340, enable: true })
 
 		.addGroup({label: 'Post Processing', enable: true })
-		// .addSlider(this, 'postOpacity', 'range', { label: 'opacity', onChange: () => { this.onPostProcessingChange(); } })
+		.addSlider(this, 'postDensity', 'range', { label: 'density', onChange: () => { this.onPostProcessingChange(); } })
 		.addCheckbox(this, 'postProcessing', { label: 'post processing', onChange: () => { this.onPostProcessingChange(); } })
 	}
 
@@ -53,5 +54,7 @@ export default class GUIView {
 	onPostProcessingChange() {
 		if (!this.app.webgl.composer) return;
 		this.app.webgl.composer.enabled = this.postProcessing;
+
+		this.app.webgl.scanlineEffect.setDensity(this.postDensity);
 	}
 }
