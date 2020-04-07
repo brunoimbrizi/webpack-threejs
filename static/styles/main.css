@@ -1,3 +1,7 @@
+html, body, .container {
+	height: 100%;
+}
+
 body {
 	background-color: #222;
 	margin: 0;

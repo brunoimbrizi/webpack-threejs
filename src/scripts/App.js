@@ -4,7 +4,7 @@ import GUIView from './gui/GUIView';
 export default class App {
 
 	constructor() {
-
+		this.el = document.querySelector('.container');
 	}
 
 	init() {
@@ -17,7 +17,7 @@ export default class App {
 
 	initWebGL() {
 		this.webgl = new WebGLView(this);
-		document.querySelector('.container').appendChild(this.webgl.renderer.domElement);
+		this.el.appendChild(this.webgl.renderer.domElement);
 	}
 
 	initGUI() {
@@ -57,7 +57,10 @@ export default class App {
 	// ---------------------------------------------------------------------------------------------
 
 	resize() {
-		if (this.webgl) this.webgl.resize();
+		const vw = document.querySelector('.container').offsetWidth || window.innerWidth;
+		const vh = document.querySelector('.container').offsetHeight || window.innerHeight;
+
+		if (this.webgl) this.webgl.resize(vw, vh);
 	}
 
 	keyup(e) {

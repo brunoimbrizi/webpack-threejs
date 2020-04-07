@@ -85,17 +85,17 @@ export default class WebGLView {
 	// EVENT HANDLERS
 	// ---------------------------------------------------------------------------------------------
 
-	resize() {
+	resize(vw, vh) {
 		if (!this.renderer) return;
-		this.camera.aspect = window.innerWidth / window.innerHeight;
+		this.camera.aspect = vw / vh;
 		this.camera.updateProjectionMatrix();
 
 		this.fovHeight = 2 * Math.tan((this.camera.fov * Math.PI) / 180 / 2) * this.camera.position.z;
 		this.fovWidth = this.fovHeight * this.camera.aspect;
 
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.setSize(vw, vh);
 
-		if (this.composer) this.composer.setSize(window.innerWidth, window.innerHeight);
+		if (this.composer) this.composer.setSize(vw, vh);
 
 		if (this.trackball) this.trackball.handleResize();
 	}
