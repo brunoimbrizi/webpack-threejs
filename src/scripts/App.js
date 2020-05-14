@@ -1,3 +1,5 @@
+import styles from '../styles/main';
+
 import WebGLView from './webgl/WebGLView';
 import GUIView from './gui/GUIView';
 
