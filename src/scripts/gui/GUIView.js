@@ -1,4 +1,5 @@
-import ControlKit from '@brunoimbrizi/controlkit';
+import * as THREE from 'three';
+import Tweakpane from 'tweakpane';
 import Stats from 'stats.js';
 
 export default class GUIView {
@@ -7,31 +8,33 @@ export default class GUIView {
 		this.app = app;
 
 		this.postProcessing = false;
-		this.postDensity = 0.8;
-		this.postOptions = ['Option A', 'Option B'];
-		this.postSelected = 0;
+		this.density = 1;
+		this.renderOptions = { 'native': 0 , 'post processing': 1 };
+		this.renderSelected = 0;
+		this.color = '#0000FF';
+		this.wireframe = true;
 
-		this.range = [0, 1];
-
-		this.initControlKit();
+		this.initPane();
 		this.initStats();
 
-		this.disable();
+		this.enable();
 	}
 
-	initControlKit() {
-		this.controlKit = new ControlKit({ full: true });
-		this.controlKit.addPanel({ width: 340, enable: true })
+	initPane() {
+		let folder;
+		
+		this.pane = new Tweakpane();
+		// this.pane.containerElem_.classList.add('full');
 
-		.addGroup({label: 'Post Processing', enable: true })
-		.addSelect(this, 'postOptions', { label: 'options', selected: this.postSelected, onChange: (index) => { this.onPostProcessingSelect(index); } })
-		.addSlider(this, 'postDensity', 'range', { label: 'density', onChange: () => { this.onPostProcessingChange(); } })
-		.addCheckbox(this, 'postProcessing', { label: 'post processing', onChange: () => { this.onPostProcessingChange(); } })
+		folder = this.pane.addFolder({ title: 'Parameters' });
+		folder.addInput(this, 'renderSelected', { label: 'render', options: this.renderOptions }).on('change', this.onRenderChange.bind(this));
+		folder.addInput(this, 'wireframe').on('change', this.onWireframeChange.bind(this));
+		folder.addInput(this, 'density', { label: 'density', min: 0, max: 4, step: 1 }).on('change', this.onDensityChange.bind(this));
+		folder.addInput(this, 'color').on('change', this.onColorChange.bind(this));
 	}
 
 	initStats() {
 		this.stats = new Stats();
-
 		document.body.appendChild(this.stats.dom);
 	}
 
@@ -40,36 +43,55 @@ export default class GUIView {
 	// ---------------------------------------------------------------------------------------------
 
 	enable() {
-		this.controlKit.enable();
+		this.pane.hidden = false;
 		if (this.stats) this.stats.dom.style.display = '';
 
-		if (!this.controlKit._full) return;
-		this.app.el.style.width = `calc(100vw - ${this.controlKit._panels[0]._width}px)`;
+		if (!this.pane.containerElem_.classList.contains('full')) return;
+		this.app.el.style.width = `calc(100vw - ${this.pane.containerElem_.offsetWidth}px)`;
 		this.app.resize();
 	}
 
 	disable() {
-		this.controlKit.disable();
+		this.pane.hidden = true;
 		if (this.stats) this.stats.dom.style.display = 'none';
 
-		if (!this.controlKit._full) return;
+		if (!this.pane.containerElem_.classList.contains('full')) return;
 		this.app.el.style.width = ``;
 		this.app.resize();
 	}
 
 	toggle() {
-		if (this.controlKit._enabled) this.disable();
+		if (!this.pane.hidden) this.disable();
 		else this.enable();
 	}
 
-	onPostProcessingChange() {
+	onRenderChange(value) {
 		if (!this.app.webgl.composer) return;
-		this.app.webgl.composer.enabled = this.postProcessing;
-		this.app.webgl.scanlineEffect.setDensity(this.postDensity);
+		this.app.webgl.composer.enabled = value;
 	}
 
-	onPostProcessingSelect(index) {
-		if (!this.app.webgl.object3D) return;
-		this.app.webgl.object3D.material.wireframe = (index == 0);
+	onDensityChange(value) {
+		const obj = this.app.webgl.object3D;
+		const geometry = new THREE.IcosahedronBufferGeometry(50, value);
+		const material = obj.material;
+
+		obj.geometry.dispose();
+		obj.parent.remove(obj);
+
+		this.app.webgl.object3D = new THREE.Mesh(geometry, material);
+		this.app.webgl.scene.add(this.app.webgl.object3D);
+	}
+
+	onColorChange(value) {
+		this.app.webgl.object3D.material.uniforms.uColor.value.set(value);
+	}
+
+	onWireframeChange(value) {
+		this.app.webgl.object3D.material.wireframe = value;
+	}
+
+	onPostProcessingChange(value) {
+		if (!this.app.webgl.composer) return;
+		this.app.webgl.composer.enabled = value;
 	}
 }

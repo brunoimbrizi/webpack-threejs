@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -31,10 +30,14 @@ module.exports = {
 			},
 			{
 				test: /\.(glsl|frag|vert)$/,
-				use: ['glslify-import-loader', 'raw-loader', 'glslify-loader']
+				use: [
+					{ loader: 'glslify-import-loader' },
+					{ loader: 'raw-loader', options: { esModule: false } },
+					{ loader: 'glslify-loader' }
+				]
 			},
 			{
-				test: /\.scss$/,
+				test: /\.s[ac]ss$/i,
 				use: [
 					{
 						loader: 'file-loader',
@@ -48,7 +51,9 @@ module.exports = {
 					{
 						loader: 'postcss-loader',
 						options: {
-					 		plugins: () => [autoprefixer()]
+					 		postcssOptions: {
+					 			plugins: [ ['postcss-preset-env'] ]
+					 		}
 						}
 					},
 					{
@@ -69,15 +74,12 @@ module.exports = {
 		extensions: ['.js', '.scss']
 	},
 	plugins: [
-		new CleanWebpackPlugin(
-			['dist'],
-			{ root: __root },
-		),
-		new CopyWebpackPlugin([
-			{
-				from: path.resolve(__root, 'static'),
-			}
-		]),
+		new CleanWebpackPlugin(),
+		new CopyWebpackPlugin({
+			patterns: [
+				{ from: path.resolve(__root, 'static'), }
+			]
+		}),
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
 		}),

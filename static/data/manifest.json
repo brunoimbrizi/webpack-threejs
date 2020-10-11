@@ -1,6 +1,7 @@
 {
 	"items":
 	[
-		
+		{ "id": "smaa-area", "src": "assets/images/smaa-area.png" },
+		{ "id": "smaa-search", "src": "assets/images/smaa-search.png" }
 	]
 }
