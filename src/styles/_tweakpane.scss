@@ -1,0 +1,27 @@
+.tp-dfwv {
+	width: 300px !important;
+
+	&.full {
+		height: 100%;
+		top: 0px !important;
+		right: 0px !important;
+
+		.tp-rotv {
+			height: 100%;
+		}
+	}
+}
+
+.tp-rotv, .tp-fldv_t, .tp-fldv_c {
+	border-radius: 0px !important;
+}
+
+.tp-lblv:not(:last-child) {
+	padding-bottom: 4px;
+	border-bottom: 1px solid #222 !important;
+}
+
+:root {
+  /* Base colors */
+  --tp-font-family: monospace;
+}

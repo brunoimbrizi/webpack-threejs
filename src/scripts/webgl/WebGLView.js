@@ -1,12 +1,15 @@
 import * as THREE from 'three';
 import glslify from 'glslify';
+import AsyncPreloader from 'async-preloader';
 
 import {
-	BlendFunction,
 	EffectComposer,
 	EffectPass,
+	NoiseEffect,
 	RenderPass,
-	ScanlineEffect,
+	SMAAEffect,
+	SMAAImageLoader,
+	VignetteEffect,
 } from 'postprocessing';
 
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
@@ -43,7 +46,9 @@ export default class WebGLView {
 		const geometry = new THREE.IcosahedronBufferGeometry(50, 1);
 
 		const material = new THREE.ShaderMaterial({
-			uniforms: {},
+			uniforms: {
+				uColor: { value: new THREE.Color(0.2, 0.2, 1) },
+			},
 			vertexShader: glslify(require('../../shaders/default.vert')),
 			fragmentShader: glslify(require('../../shaders/default.frag')),
 			wireframe: true
@@ -54,16 +59,30 @@ export default class WebGLView {
 	}
 
 	initPostProcessing() {
-		this.composer = new EffectComposer(this.renderer);
+		this.composer = new EffectComposer(this.renderer, { frameBufferType: THREE.HalfFloatType });
 		this.composer.enabled = false;
 
-		this.scanlineEffect = new ScanlineEffect({ blendFunction: BlendFunction.MULTIPLY, opacity: 0.05, density: 0.5 });
+		const smaaSrch = AsyncPreloader.items.get('smaa-search');
+		const smaaArea = AsyncPreloader.items.get('smaa-area');
 
-		this.composer.addPass(new RenderPass(this.scene, this.camera));
-		this.composer.addPass(new EffectPass(this.camera, this.scanlineEffect));
+		const smaaEffect = new SMAAEffect(smaaSrch, smaaArea);
+		smaaEffect.edgeDetectionMaterial.setEdgeDetectionThreshold(0.05);
+		
+		const noiseEffect = new NoiseEffect({ premultiply: true });
+		const vignetteEffect = new VignetteEffect();
 
-		// kickstart composer
-		this.composer.render(1);
+		const renderPass = new RenderPass(this.scene, this.camera);
+		const effectPass = new EffectPass(
+			this.camera,
+			noiseEffect,
+			vignetteEffect,
+			smaaEffect
+		);
+
+		noiseEffect.blendMode.opacity.value = 0.75;
+
+		this.composer.addPass(renderPass);
+		this.composer.addPass(effectPass);
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -71,13 +90,13 @@ export default class WebGLView {
 	// ---------------------------------------------------------------------------------------------
 
 	update() {
-		const delta = this.clock.getDelta();
-		
 		if (this.trackball) this.trackball.update();
 	}
 
 	draw() {
-		if (this.composer && this.composer.enabled) this.composer.render(this.clock.getDelta());
+		const delta = this.clock.getDelta();
+
+		if (this.composer && this.composer.enabled) this.composer.render(delta);
 		else this.renderer.render(this.scene, this.camera);
 	}
 
@@ -96,7 +115,6 @@ export default class WebGLView {
 		this.renderer.setSize(vw, vh);
 
 		if (this.composer) this.composer.setSize(vw, vh);
-
 		if (this.trackball) this.trackball.handleResize();
 	}
 }
