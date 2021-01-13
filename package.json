@@ -1,6 +1,6 @@
 {
   "name": "webpack-threejs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple boilerplate to start projects with Three.js and webpack.",
   "keywords": [
     "three.js",
@@ -13,10 +13,9 @@
     "url": "http://brunoimbrizi.com"
   },
   "license": "MIT",
-  "sideEffects": false,
   "scripts": {
-    "build": "webpack -p --config config/prod.js",
-    "start": "webpack-dev-server --config config/dev.js"
+    "build": "webpack -p --config webpack.config.js",
+    "start": "webpack-dev-server --config webpack.config.js"
   },
   "dependencies": {
     "async-preloader": "^4.9.2",
@@ -27,30 +26,30 @@
     "tweakpane": "^1.5.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
+    "@babel/core": "^7.12.9",
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/polyfill": "^7.11.5",
-    "@babel/preset-env": "^7.11.5",
-    "babel-loader": "^8.1.0",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^6.2.1",
-    "css-loader": "^4.3.0",
-    "extract-loader": "^5.1.0",
-    "file-loader": "^6.1.1",
+    "copy-webpack-plugin": "^6.4.0",
+    "css-loader": "^5.0.1",
+    "file-loader": "^6.2.0",
     "glslify": "^7.1.1",
     "glslify-import-loader": "^0.1.2",
     "glslify-loader": "^2.0.0",
     "html-webpack-plugin": "^4.5.0",
     "imports-loader": "^1.2.0",
+    "mini-css-extract-plugin": "^0.12.0",
     "postcss-loader": "^4.0.4",
     "postcss-preset-env": "^6.7.0",
     "raw-loader": "^4.0.2",
-    "sass": "^1.27.0",
-    "sass-loader": "^10.0.3",
+    "sass": "^1.32.4",
+    "sass-loader": "^10.1.1",
     "style-loader": "^2.0.0",
     "webpack": "^4.37.0",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.2.0"
+    "webpack-merge": "^5.4.1"
   }
 }
