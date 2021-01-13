@@ -12,6 +12,20 @@
 	}
 }
 
+.tp-rotv {
+	font-size: 12px !important;
+}
+
+.tp-fldv_t {
+	height: 32px !important;
+}
+.tp-fldv-expanded {
+	margin-bottom: 6px;
+}
+.tp-lblv {
+	padding: 2px 4px;
+}
+
 .tp-rotv, .tp-fldv_t, .tp-fldv_c {
 	border-radius: 0px !important;
 }
@@ -22,6 +36,5 @@
 }
 
 :root {
-  /* Base colors */
   --tp-font-family: monospace;
 }
