@@ -2,16 +2,6 @@ import * as THREE from 'three';
 import glslify from 'glslify';
 import AsyncPreloader from 'async-preloader';
 
-import {
-	EffectComposer,
-	EffectPass,
-	NoiseEffect,
-	RenderPass,
-	SMAAEffect,
-	SMAAImageLoader,
-	VignetteEffect,
-} from 'postprocessing';
-
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 
 export default class WebGLView {
@@ -22,7 +12,6 @@ export default class WebGLView {
 		this.initThree();
 		this.initObject();
 		this.initControls();
-		this.initPostProcessing();
 	}
 
 	initThree() {
@@ -58,33 +47,6 @@ export default class WebGLView {
 		this.scene.add(this.object3D);
 	}
 
-	initPostProcessing() {
-		this.composer = new EffectComposer(this.renderer, { frameBufferType: THREE.HalfFloatType });
-		this.composer.enabled = false;
-
-		const smaaSrch = AsyncPreloader.items.get('smaa-search');
-		const smaaArea = AsyncPreloader.items.get('smaa-area');
-
-		const smaaEffect = new SMAAEffect(smaaSrch, smaaArea);
-		smaaEffect.edgeDetectionMaterial.setEdgeDetectionThreshold(0.05);
-		
-		const noiseEffect = new NoiseEffect({ premultiply: true });
-		const vignetteEffect = new VignetteEffect();
-
-		const renderPass = new RenderPass(this.scene, this.camera);
-		const effectPass = new EffectPass(
-			this.camera,
-			noiseEffect,
-			vignetteEffect,
-			smaaEffect
-		);
-
-		noiseEffect.blendMode.opacity.value = 0.75;
-
-		this.composer.addPass(renderPass);
-		this.composer.addPass(effectPass);
-	}
-
 	// ---------------------------------------------------------------------------------------------
 	// PUBLIC
 	// ---------------------------------------------------------------------------------------------
@@ -94,10 +56,7 @@ export default class WebGLView {
 	}
 
 	draw() {
-		const delta = this.clock.getDelta();
-
-		if (this.composer && this.composer.enabled) this.composer.render(delta);
-		else this.renderer.render(this.scene, this.camera);
+		this.renderer.render(this.scene, this.camera);
 	}
 
 	// ---------------------------------------------------------------------------------------------
@@ -109,12 +68,11 @@ export default class WebGLView {
 		this.camera.aspect = vw / vh;
 		this.camera.updateProjectionMatrix();
 
-		this.fovHeight = 2 * Math.tan((this.camera.fov * Math.PI) / 180 / 2) * this.camera.position.z;
-		this.fovWidth = this.fovHeight * this.camera.aspect;
+		// this.fovHeight = 2 * Math.tan((this.camera.fov * Math.PI) / 180 / 2) * this.camera.position.z;
+		// this.fovWidth = this.fovHeight * this.camera.aspect;
 
 		this.renderer.setSize(vw, vh);
 
-		if (this.composer) this.composer.setSize(vw, vh);
 		if (this.trackball) this.trackball.handleResize();
 	}
 }

@@ -9,13 +9,13 @@ export default class GUIView {
 
 		this.postProcessing = false;
 		this.density = 1;
-		this.renderOptions = { 'native': 0 , 'post processing': 1 };
-		this.renderSelected = 0;
+		this.optionOptions = { 'option A': 0 , 'option B': 1 };
+		this.optionSelected = 0;
 		this.color = '#0000FF';
 		this.wireframe = true;
 
 		this.initPane();
-		this.initStats();
+		// this.initStats();
 
 		this.enable();
 	}
@@ -27,7 +27,7 @@ export default class GUIView {
 		// this.pane.containerElem_.classList.add('full');
 
 		folder = this.pane.addFolder({ title: 'Parameters' });
-		folder.addInput(this, 'renderSelected', { label: 'render', options: this.renderOptions }).on('change', this.onRenderChange.bind(this));
+		folder.addInput(this, 'optionSelected', { label: 'render', options: this.optionOptions }).on('change', this.onOptionChange.bind(this));
 		folder.addInput(this, 'wireframe').on('change', this.onWireframeChange.bind(this));
 		folder.addInput(this, 'density', { label: 'density', min: 0, max: 4, step: 1 }).on('change', this.onDensityChange.bind(this));
 		folder.addInput(this, 'color').on('change', this.onColorChange.bind(this));
@@ -65,9 +65,8 @@ export default class GUIView {
 		else this.enable();
 	}
 
-	onRenderChange(value) {
-		if (!this.app.webgl.composer) return;
-		this.app.webgl.composer.enabled = value;
+	onOptionChange(value) {
+		console.log('onOptionChange', value);
 	}
 
 	onDensityChange(value) {
@@ -90,8 +89,4 @@ export default class GUIView {
 		this.app.webgl.object3D.material.wireframe = value;
 	}
 
-	onPostProcessingChange(value) {
-		if (!this.app.webgl.composer) return;
-		this.app.webgl.composer.enabled = value;
-	}
 }

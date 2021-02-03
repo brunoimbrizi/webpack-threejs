@@ -6,13 +6,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { ESBuildPlugin } = require('esbuild-loader');
 
 const isProd = process.argv.indexOf('-p') !== -1;
 
 const common = {
 	mode: 'development',
 	entry: {
-		index: ['@babel/polyfill', './src/scripts/index.js'],
+		index: ['./src/scripts/index.js'],
 	},
 	output: {
 		filename: 'scripts/[name].[chunkhash].js',
@@ -23,14 +24,10 @@ const common = {
 		rules: [
 			{
 				test: /\.js$/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['@babel/preset-env'],
-						plugins: ['@babel/plugin-syntax-dynamic-import']
-					}
-				},
-				exclude: /node_modules\/(?!(postprocessing)\/).*/,
+				loader: 'esbuild-loader',
+				options: {
+					target: 'es2015'
+				}
 			},
 			{
 				test: /\.(glsl|frag|vert)$/,
@@ -71,6 +68,7 @@ const common = {
 				{ from: path.resolve(__dirname, 'static'), }
 			]
 		}),
+		new ESBuildPlugin(),
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
 		}),
@@ -85,7 +83,22 @@ const dev = {
 	devtool: 'inline-source-map',
 	devServer: {
 		contentBase: './dist',
-		host: '0.0.0.0'
+		host: '0.0.0.0',
+		stats: {
+			assets: false,
+			children: false,
+			chunks: false,
+			colors: true,
+			hash: false,
+			entrypoints: false,
+			modules: false,
+			publicPath: false,
+			reasons: false,
+			source: false,
+			timings: true,
+			version: false,
+			warnings: false,
+		}
 	}
 };
 

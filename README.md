@@ -13,11 +13,11 @@ ___
 
 ### Libraries
 - [AsyncPreloader](https://github.com/dmnsgn/async-preloader) - asset preloader
-- [postprocessing](https://github.com/vanruesc/postprocessing) - image filter effects
 - [stats.js](https://github.com/mrdoob/stats.js) - performance monitor
 - [Three.js](https://github.com/mrdoob/three.js/) - 3D engine
 - [Tweakpane](https://cocopon.github.io/tweakpane) - GUI
 
+- [esbuild-loader](https://github.com/privatenumber/esbuild-loader) - fast JavaScript bundler
 - [glslify](https://github.com/glslify/glslify) - module system for GLSL
 - [SASS](https://sass-lang.com/) - CSS extension
 - [Webpack](https://github.com/webpack) - build system
