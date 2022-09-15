@@ -1,6 +1,6 @@
 {
   "name": "webpack-threejs",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A simple boilerplate to start projects with Three.js and webpack.",
   "keywords": [
     "three.js",
@@ -21,8 +21,8 @@
     "async-preloader": "^4.9.2",
     "domready": "^1.0.8",
     "stats.js": "^0.17.0",
-    "three": "^0.132.2",
-    "tweakpane": "^1.5.5"
+    "three": "^0.144.0",
+    "tweakpane": "^3.1.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",

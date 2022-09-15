@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Tweakpane from 'tweakpane';
+import { Pane } from 'tweakpane';
 import Stats from 'stats.js';
 
 export default class GUIView {
@@ -23,7 +23,7 @@ export default class GUIView {
 	initPane() {
 		let folder;
 		
-		this.pane = new Tweakpane();
+		this.pane = new Pane();
 		// this.pane.containerElem_.classList.add('full');
 
 		folder = this.pane.addFolder({ title: 'Parameters' });
@@ -71,7 +71,7 @@ export default class GUIView {
 
 	onDensityChange(value) {
 		const obj = this.app.webgl.object3D;
-		const geometry = new THREE.IcosahedronBufferGeometry(50, value);
+		const geometry = new THREE.IcosahedronGeometry(50, value);
 		const material = obj.material;
 
 		obj.geometry.dispose();

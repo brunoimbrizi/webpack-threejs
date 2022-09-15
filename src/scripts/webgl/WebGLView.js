@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import glslify from 'glslify';
 import AsyncPreloader from 'async-preloader';
 
-import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 export default class WebGLView {
 
@@ -10,6 +10,7 @@ export default class WebGLView {
 		this.app = app;
 
 		this.initThree();
+		this.initGrid();
 		this.initObject();
 		this.initControls();
 	}
@@ -26,13 +27,20 @@ export default class WebGLView {
 	}
 
 	initControls() {
-		this.trackball = new TrackballControls(this.camera, this.renderer.domElement);
-		this.trackball.rotateSpeed = 2.0;
-		this.trackball.enabled = true;
+		this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+		this.controls.enabled = true;
+	}
+
+	initGrid() {
+		const helper = new THREE.GridHelper(2000, 20);
+		helper.position.y = -50;
+		helper.material.opacity = 0.25;
+		helper.material.transparent = true;
+		this.scene.add(helper);
 	}
 
 	initObject() {
-		const geometry = new THREE.IcosahedronBufferGeometry(50, 1);
+		const geometry = new THREE.IcosahedronGeometry(50, 1);
 
 		const material = new THREE.ShaderMaterial({
 			uniforms: {
@@ -52,7 +60,7 @@ export default class WebGLView {
 	// ---------------------------------------------------------------------------------------------
 
 	update() {
-		if (this.trackball) this.trackball.update();
+		if (this.controls) this.controls.update();
 	}
 
 	draw() {
@@ -72,7 +80,5 @@ export default class WebGLView {
 		// this.fovWidth = this.fovHeight * this.camera.aspect;
 
 		this.renderer.setSize(vw, vh);
-
-		if (this.trackball) this.trackball.handleResize();
 	}
 }
